@@ -1,15 +1,37 @@
 # gcloud
 
-The `gcr.io/cloud-builders/gcloud` image is maintained by the Cloud Build team,
-but it may not support the most recent versions of `gcloud`. We also do not
-provide historical pinned versions of `gcloud` nor support across multiple
-platforms.
+The `gcr.io/cloud-builders/gcloud` image is a lightweight version of gcloud
+maintained by the Cloud Build team. This image contains only the components
+relevant to Cloud Build – a subset of the tools available in the full
+`cloud-sdk` image. Because `gcr.io/cloud-builders/gcloud` is smaller, it lets
+you run builds faster. 
+
+Additionally, `gcr.io/cloud-builders/gcloud` supports pre-caching on worker
+images. When Cloud Build creates a worker, it pre-caches all of the
+`cloud-builder` images for you, so that your build steps have these resources
+immediately available at build time.
+
+## `gcloud` vs `gcloud-slim`
+
+There are two variants of the `gcloud` builder in this repository:
+
+* `gcloud` installs all optional gcloud components, and is much larger.
+* `gcloud-slim` installs only the `gcloud` CLI and no components, and is
+  smaller.
+
+## Limitations
+
+The `gcr.io/cloud-builders/gcloud` image may not support the most recent
+versions of `gcloud`. The Cloud Build team doesn't provide historical pinned versions of
+`gcloud` or support across multiple platforms.
+
+## Alternatives
 
 The Cloud SDK team maintains a `cloud-sdk` image that supports multiple tagged
 versions of Cloud SDK across multiple platforms. Please visit
 https://github.com/GoogleCloudPlatform/cloud-sdk-docker for details.
 
-Suggested alternative images include:
+Suggested `cloud-sdk` images include:
 
     gcr.io/google.com/cloudsdktool/cloud-sdk
     gcr.io/google.com/cloudsdktool/cloud-sdk:alpine
@@ -40,7 +62,7 @@ to your `cloudbuild.yaml`:
 
 ## Examples
 
-The following examples demonstrate build requests that use `gcloud`.
+The following example demonstrates a build request that uses `gcloud`.
 
 ### Clone a Cloud Source Repository using `gcloud`
 
@@ -52,11 +74,3 @@ steps:
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   args: ['gcloud', 'source', 'repos', 'clone', 'default']
 ```
-
-## `gcloud` vs `gcloud-slim`
-
-There are two variants of the `gcloud` builder in this repository:
-
-* `gcloud` installs all optional gcloud components, and is much larger.
-* `gcloud-slim` installs only the `gcloud` CLI and no components, and is
-  smaller.
